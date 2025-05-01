@@ -8,7 +8,7 @@ import java.util.*;
 
 public class ReadTokenize {
     static Map<String, ArrayList<String>> terms = new TreeMap<>();
-    static Map<String, NavigableMap<String, Integer>> termsV2 = new HashMap<>();
+    static Map<String, SortedMap<String, Integer>> termsV2 = new TreeMap<>();
     static String willIgnore = "[.,!?:;'\"]";
 
     public static void readntokenize() throws IOException {
@@ -94,7 +94,7 @@ public class ReadTokenize {
             }
         }
 
-        for (Map.Entry<String, NavigableMap<String, Integer>> entry : termsV2.entrySet()) {
+        for (Map.Entry<String, SortedMap<String, Integer>> entry : termsV2.entrySet()) {
             System.out.print(entry.getKey() + " --> ");
 
             for (Map.Entry<String, Integer> docs : entry.getValue().entrySet()) {
