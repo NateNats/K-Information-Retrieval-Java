@@ -73,6 +73,7 @@ public class ReadTokenize {
                             token = token.replaceAll(willIgnore, "");
                         }
 
+                        token = token.toLowerCase();
                         String filename = file.getName().split("\\.")[0];
                         if (termsV2.containsKey(token)) {
                             if (termsV2.get(token).containsKey(filename)) {
