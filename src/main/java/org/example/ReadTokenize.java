@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class ReadTokenize {
-    static Map<String, ArrayList<String>> terms = new TreeMap<>();
+    // nanti bikin class term buat gantiin String pada key, nanti isinya String dan df, berlaku juga untuk SortedMap nya
+    // uts: cuma sampe boolean, tapi buat nyimpan tf idf
+
+    static Map<String, ArrayList<String>> terms = new HashMap<>();
     static Map<String, SortedMap<String, Integer>> termsV2 = new TreeMap<>();
     static String willIgnore = "[.,!?:;'\"]";
 
