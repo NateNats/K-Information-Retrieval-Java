@@ -1,6 +1,6 @@
-package org.example;
+package org.CustomUtil;
 
-public class Document {
+public class Document implements Comparable<Document> {
     private String document;
     private int tf;
 
@@ -32,9 +32,20 @@ public class Document {
 
     @Override
     public String toString() {
-        return "Document{" +
-                "document='" + document + '\'' +
-                ", tf=" + tf +
-                '}';
+        return "document: " + document + ", tf: " + tf;
+    }
+
+    @Override
+    public int compareTo(Document o) {
+        String doc2 = o.getDocument();
+        String thisDoc = this.getDocument();
+
+        if (thisDoc.equals(doc2)) {
+            return 0;
+        } else if (thisDoc.compareTo(doc2) > 0) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 }

@@ -1,4 +1,9 @@
-package org.example;
+package org.Main;
+
+import org.CustomUtil.Document;
+import org.CustomUtil.LinkedListOrdered;
+import org.CustomUtil.Term;
+import org.CustomUtil.HashMapC;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,11 +17,14 @@ public class ReadTokenize {
 
     static Map<String, ArrayList<String>> terms = new HashMap<>();
     static Map<String, SortedMap<String, Integer>> termsV2 = new TreeMap<>();
+    static Map<Term, LinkedListOrdered<Document>> termsV3 = new TreeMap<>();
+
     static String willIgnore = "[.,!?:;'\"]";
+    static final String FILEPATH = "src/main/resources";
 
     public static void readntokenize() throws IOException {
 
-        File folder = new File("src/main/resources");
+        File folder = new File(FILEPATH);
         File[] files = folder.listFiles();
 
         assert files != null; // mengecek apakah variabel tersebut kosong (null) atau tidak.
@@ -60,7 +68,7 @@ public class ReadTokenize {
 
     public static void readntokenizeV2() throws IOException {
 
-        File folder = new File("src/main/resources");
+        File folder = new File(FILEPATH);
         File[] files = folder.listFiles();
 
         assert files != null;
@@ -106,6 +114,58 @@ public class ReadTokenize {
             }
 
             System.out.println();
+        }
+    }
+
+    public static void readntokenizeV3() {
+        File folder = new File(FILEPATH);
+        String[] files = folder.list();
+
+        assert files != null;
+        for (String file : files) {
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String filename = file.split("\\.")[0];
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] tokens = line.split(" ");
+
+                    for (String token : tokens) {
+                        if (token.contains(".") || token.contains(",") || token.contains("!") ||
+                                token.contains("?") || token.contains(":") || token.contains(";") ||
+                                token.contains("'") || token.contains("\"")) {
+                            token = token.replaceAll(willIgnore, "");
+                        }
+
+                        token = token.toLowerCase();
+
+                        Set<Term> termSet = termsV3.keySet();
+                        ListIterator<Term> iter = new ArrayList<>(termSet).listIterator();
+
+                        while (iter.hasNext()) {
+                            Term curr = iter.next();
+
+                            if (curr.getTerm().equals(token)) {
+                                ArrayList<Document> docs = termsV3.get(curr).getAll();
+
+                                for (Document doc : docs) {
+                                    if (doc.getDocument().equals(filename)) {
+                                        doc.setTf(doc.getTf() + 1);
+                                    } else {
+                                        Document newDoc = new Document(filename, 1);
+                                        termsV3.get(curr).addSort(newDoc);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+            } catch (Exception e) {
+
+            }
         }
     }
 
